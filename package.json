@@ -1,0 +1,15 @@
+{
+  "name": "tia",
+  "version": "1.0.0",
+  "description": "Tia is a verifying bot for triton auto club",
+  "main": "source/tia.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Caden",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.11.0",
+    "dotenv": "^16.3.1"
+  }
+}
