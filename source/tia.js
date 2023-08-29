@@ -12,6 +12,7 @@ const client = new Client({
 
 const introduceChannelID = "962256471003918366";
 const miaId = "1128508029424373861";
+
 // Function for non-blocking delay
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -53,6 +54,7 @@ client.on("messageCreate", async (message) => {
 
   const createdTime = message.createdTimestamp;
 
+  //See if the message matches any variant of the format and is sent int the message channel
   if (
     //newMember.includes(message.author.id) &&
     verifyMessageFormat.test(message.content.trim()) &&
@@ -60,27 +62,40 @@ client.on("messageCreate", async (message) => {
   ) {
     console.log(`trying...`);
     try {
+      //Get name, college, year from message
       let [, name, college, year] = message.content.match(verifyMessageFormat);
+
+      //Capitalize first letters
       name = name.charAt(0).toUpperCase() + name.slice(1);
       college = college.charAt(0).toUpperCase() + college.slice(1);
+
+      //Account for people typing 2025, 2024 instead of 25,24
       if (parseInt(year) > 2000) {
         year = (parseInt(year) - 2000).toString();
       }
+
+      //Delay verification if interval too small
       while (Date.now() - twoMin < lastVerifyTime) {
         await sleep(100);
       }
 
+      //Set nickname according to format
       await message.member.setNickname(
         `${name.trim()} | ${college.trim()} | ${year.trim()}`
       );
+
+      //Give out member role
       const memberRole = message.guild.roles.cache.get("812038184246181960");
       await message.member.roles.add(memberRole);
 
+      //Delete from new member array
       const index = newMember.indexOf(message.author.id);
       if (index > -1) {
         newMember.splice(index, 1);
       }
       lastVerifyTime = createdTime;
+
+      //Reply
       message.reply(
         `You are verified! Go introduce yourself in <#${introduceChannelID}> !!`
       );
@@ -92,6 +107,7 @@ client.on("messageCreate", async (message) => {
   processing = false;
 });
 
+//Used for miata command in Mia
 client.on("messageCreate", async (message) => {
   if (
     message.author.id === "551279669979119616" &&
