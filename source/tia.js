@@ -11,7 +11,12 @@ const client = new Client({
 });
 
 const introduceChannelID = "962256471003918366";
+//TestintroduceChannelID: 1128908643174199337
 const miaId = "1128508029424373861";
+const verifyChannelID = "902108236713426975";
+//TestverifyChannelID: 1128908643174199337
+const memberRoleID = "812038184246181960";
+//TestmemeberRoleID: 1135788464105857114
 
 // Function for non-blocking delay
 function sleep(ms) {
@@ -24,14 +29,30 @@ let newMember = [];
 let lastVerifyTime = 0;
 const twoMin = 2 * 60 * 1000;
 
-// Message content format
+// Message content formats
 const verifyMessageFormat =
-  /^(.+)\s*\|\s*(warren|sixth|seventh|revelle|muir|marshall|erc)\s*\|\s*(1[0-9]|2[0-9]|20[1-3][0-9])$/i;
+  /^(.+)\s*\|\s*(warren|sixth|seventh|revelle|muir|marshall|erc|eighth)\s*\|\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
 
+const verifyMessageFormat2 =
+  /^(.+)\s*\/\s*(warren|sixth|seventh|revelle|muir|marshall|erc|eighth)\s*\/\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
+
+const verifyMessageFormat3 =
+  /^(.+)\s*\,\s*(warren|sixth|seventh|revelle|muir|marshall|erc|eighth)\s*\,\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
+
+const differentThanVerifyFormat =
+  /^(.+)\s*\|\s*(.+)\s*\|\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
+
+const differentThanVerifyFormat2 =
+  /^(.+)\s*\/\s*(.+)\s*\/\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
+
+const differentThanVerifyFormat3 =
+  /^(.+)\s*\,\s*(.+)\s*\,\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
+
+//Ready event
 client.on("ready", () => {
   console.log(`🏎️  ${client.user.tag} is online!`);
   client.user.setActivity({
-    name: "headlights go down",
+    name: "Brad lie",
     type: ActivityType.Watching,
   });
 });
@@ -56,14 +77,28 @@ client.on("messageCreate", async (message) => {
 
   //See if the message matches any variant of the format and is sent int the message channel
   if (
-    //newMember.includes(message.author.id) &&
-    verifyMessageFormat.test(message.content.trim()) &&
-    message.channelId === "902108236713426975"
+    // newMember.includes(message.author.id) &&
+    (verifyMessageFormat.test(message.content.trim()) &&
+      message.channelId === verifyChannelID) ||
+    (verifyMessageFormat2.test(message.content.trim()) &&
+      message.channelId === verifyChannelID) ||
+    (verifyMessageFormat3.test(message.content.trim()) &&
+      message.channelId === verifyChannelID)
   ) {
     console.log(`trying...`);
+    let name;
+    let college;
+    let year;
+
     try {
       //Get name, college, year from message
-      let [, name, college, year] = message.content.match(verifyMessageFormat);
+      if (verifyMessageFormat.test(message.content.trim())) {
+        [, name, college, year] = message.content.match(verifyMessageFormat);
+      } else if (verifyMessageFormat2.test(message.content.trim())) {
+        [, name, college, year] = message.content.match(verifyMessageFormat2);
+      } else {
+        [, name, college, year] = message.content.match(verifyMessageFormat3);
+      }
 
       //Capitalize first letters
       name = name.charAt(0).toUpperCase() + name.slice(1);
@@ -72,6 +107,16 @@ client.on("messageCreate", async (message) => {
       //Account for people typing 2025, 2024 instead of 25,24
       if (parseInt(year) > 2000) {
         year = (parseInt(year) - 2000).toString();
+      }
+
+      //Remove ' if it exists
+      if (year.charAt(year.length - 1) == "'") {
+        console.log(`${year.length}`);
+
+        console.log(`In year '`);
+        let deleteLastChar = year.slice(0, -1);
+        year = deleteLastChar;
+        console.log(`${year}`);
       }
 
       //Delay verification if interval too small
@@ -85,7 +130,7 @@ client.on("messageCreate", async (message) => {
       );
 
       //Give out member role
-      const memberRole = message.guild.roles.cache.get("812038184246181960");
+      const memberRole = message.guild.roles.cache.get(memberRoleID);
       await message.member.roles.add(memberRole);
 
       //Delete from new member array
@@ -97,12 +142,29 @@ client.on("messageCreate", async (message) => {
 
       //Reply
       message.reply(
-        `You are verified! Go introduce yourself in <#${introduceChannelID}> !!`
+        `You are verified! Feel free to introduce yourself in <#${introduceChannelID}> !!`
       );
       console.log(`Done!`);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  //If not UCSD, reply "need manual verification"
+  else if (
+    (!verifyMessageFormat.test(message.content.trim()) &&
+      differentThanVerifyFormat.test(message.content.trim()) &&
+      message.channelId === verifyChannelID) ||
+    (!verifyMessageFormat2.test(message.content.trim()) &&
+      differentThanVerifyFormat2.test(message.content.trim()) &&
+      message.channelId === verifyChannelID) ||
+    (!verifyMessageFormat3.test(message.content.trim()) &&
+      differentThanVerifyFormat3.test(message.content.trim()) &&
+      message.channelId === verifyChannelID)
+  ) {
+    message.reply(
+      `I am sorry, it appears you need manual verification. A board member will verify you shortly.`
+    );
   }
   processing = false;
 });
