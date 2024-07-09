@@ -33,7 +33,7 @@ const verifyChannelID = "902108236713426975";
 //TestverifyChannelID: 1141162992310960218
 const memberRoleID = "812038184246181960";
 //TestmemeberRoleID: 1135788464105857114
-const boardChannelID = "1120964377617637456";
+const boardChannelID = "1248444141122224190";
 //ActualboardChannelID = 1120964377617637456
 const boardID = "812038215267254313";
 
@@ -150,7 +150,6 @@ client.on("messageCreate", async (message) => {
           if (!existing_file) {
             existing_file = [];
           }
-          console.log(existing_file);
           //push the new request messageID into the file
           existing_file.push({
             boardMsgID: `${sentMessageID}`,
