@@ -51,7 +51,7 @@ const verifyMessageFormat =
 const differentThanVerifyFormat =
   /^(.+)\s*[|,/-]\s*(.+)\s*[|,/-]\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
 
-const differentThanVerifyFormat2 = /^(.+)\s*[|,/-]\s*(.+)\s*$/i;
+const differentThanVerifyFormat2 = /^(.+)\s*[|,/-]\s*(\w+)\s*$/i;
 
 //Ready event
 client.on("ready", () => {
