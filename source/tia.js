@@ -46,12 +46,12 @@ function sleep(ms) {
 let newMember = [];
 // Message content formats
 const verifyMessageFormat =
-  /^(.+)\s*[|,/]\s*(warren|sixth|seventh|revelle|muir|marshall|erc|eighth)\s*[|,/]\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
+  /^(.+)\s*[|,/-]\s*(warren|sixth|seventh|revelle|muir|marshall|erc|eighth)\s*[|,/-]\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
 
 const differentThanVerifyFormat =
-  /^(.+)\s*[|,/]\s*(.+)\s*[|,/]\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
+  /^(.+)\s*[|,/-]\s*(.+)\s*[|,/-]\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
 
-const differentThanVerifyFormat2 = /^(.+)\s*[|,/]\s*(hs)\s*$/i;
+const differentThanVerifyFormat2 = /^(.+)\s*[|,/-]\s*(.+)\s*$/i;
 
 //Ready event
 client.on("ready", () => {
