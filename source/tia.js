@@ -9,6 +9,7 @@ const {
   Events,
   Partials,
 } = require("discord.js");
+const { boardChannelID } = require("../../constants");
 
 const client = new Client({
   intents: [
@@ -33,7 +34,7 @@ const verifyChannelID = "902108236713426975";
 //TestverifyChannelID: 1141162992310960218
 const memberRoleID = "812038184246181960";
 //TestmemeberRoleID: 1135788464105857114
-const boardChannelID = "1248444141122224190";
+//const boardChannelID = "1120964377617637456";
 //ActualboardChannelID = 1120964377617637456
 const boardID = "812038215267254313";
 
@@ -46,12 +47,12 @@ function sleep(ms) {
 let newMember = [];
 // Message content formats
 const verifyMessageFormat =
-  /^(.+)\s*[|,/]\s*(warren|sixth|seventh|revelle|muir|marshall|erc|eighth)\s*[|,/]\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
+  /^(.+)\s*[|,/-]\s*(warren|sixth|seventh|revelle|muir|marshall|erc|eighth)\s*[|,/-]\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
 
 const differentThanVerifyFormat =
-  /^(.+)\s*[|,/]\s*(.+)\s*[|,/]\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
+  /^(.+)\s*[|,/-]\s*(.+)\s*[|,/-]\s*(1[0-9]'*|2[0-9]'*|20[1-3][0-9])$/i;
 
-const differentThanVerifyFormat2 = /^(.+)\s*[|,/]\s*(hs)\s*$/i;
+const differentThanVerifyFormat2 = /^(.+)\s*[|,/-]\s*(.+)\s*$/i;
 
 //Ready event
 client.on("ready", () => {
@@ -222,13 +223,6 @@ client.on("messageCreate", async (message) => {
     }
   }
 
-  if (
-    message.author.id === "551279669979119616" &&
-    message.content === "KILL123567"
-  ) {
-    console.log("Putting Tia to sleep...");
-    client.destroy();
-  }
   //Used for miata command in Mia
   if (
     message.content.includes("_MIATA_") &&
